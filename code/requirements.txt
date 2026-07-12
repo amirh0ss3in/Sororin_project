@@ -1,0 +1,10 @@
+# Python dependencies for the Sororin (CDCA5) systems-biology pipeline.
+# Install with:  pip install -r requirements.txt
+#
+# Tested with Python 3.10+. Versions are lower bounds that are known to work;
+# newer releases are generally fine.
+
+requests>=2.28        # HTTP requests to the UniProt and STRING REST APIs
+numpy>=1.23           # numeric arrays for the disorder profile
+matplotlib>=3.6       # figures (disorder plot, network diagram)
+networkx>=3.0         # building and analysing the interaction graph

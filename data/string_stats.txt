@@ -1,0 +1,21 @@
+nodes	16
+edges	107
+density	0.892
+
+degree ranking:
+  STAG2	15
+  CDCA5	15
+  ESPL1	15
+  SMC3	15
+  RAD21	15
+  STAG1	14
+  WAPL	14
+  PDS5A	14
+  SMC1A	14
+  CDK1	13
+  AURKB	13
+  PLK1	13
+  PDS5B	13
+  NIPBL	12
+  MAU2	11
+  CDC20	8

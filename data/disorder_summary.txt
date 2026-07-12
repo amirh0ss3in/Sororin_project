@@ -1,0 +1,12 @@
+Total residues: 252
+Disordered (IUPred2 > 0.5): 155 (61.5%)
+Mean IUPred2: 0.605
+
+region                            range  meanIUP   %dis
+N-terminal IDR                  1-48      0.822   100%
+Central IDR                    72-142     0.697    90%
+C-terminal IDR                199-222     0.712    96%
+Sororin domain (folded)       230-252     0.313     0%
+KEN box (APC/C)                88-90      0.636   100%
+FGF motif (PDS5A/B)           166-168     0.467    33%
+Ser209 site (ERK2)            209-209     0.742   100%

@@ -1,0 +1,219 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\usepackage[hidelinks]{hyperref}
+\usepackage[font=small,labelfont=bf,textfont=it]{caption}
+\usepackage{titlesec}
+\usepackage{authblk}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xcolor}
+
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{0.7em}{\uppercase}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\setlength{\parindent}{1.2em}
+\setlength{\bibsep}{2pt}
+\renewcommand{\arraystretch}{1.15}
+
+\title{\vspace{-1.2cm}\bfseries Systems Biology of Sororin (CDCA5): A Disorder-Centred View of a Fuzzy Cohesin Interaction Hub and its Phospho- and Ubiquitin-Regulated Interactome}
+\author[ ]{Amirhossein Rezaei}
+\affil[ ]{\normalsize\itshape Physics of Data, Department of Physics and Astronomy ``Galileo Galilei'', University of Padova, I-35131 Padova, Italy \\ \texttt{amirhossein.rezaeigolmarz@studenti.unipd.it}}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-0.9cm}
+
+\begin{abstract}
+\noindent Sororin (CDCA5) stabilises sister-chromatid cohesion by antagonising the cohesin-release factor WAPL, and its activity is switched off during mitosis through phosphorylation. We analysed CDCA5 (UniProt Q96FF9) from a systems-biology perspective by integrating a STRING/curated interaction network, per-residue disorder and binding predictions (IUPred2 and ANCHOR2), UniProt sequence annotations, and the primary literature on its phospho- and ubiquitin-dependent regulation. The CDCA5 network formed a dense cohesin-centred module (16 nodes, 107 edges, density $=0.89$) in which Sororin was a high-degree node connected with near-maximal confidence to PDS5A/B, WAPL and the cohesin core, with the cancer-relevant regulators ERK2 (MAPK1) and SPOP appearing only as peripheral, literature-curated edges. Disorder prediction indicated that $61.5\%$ of the 252-residue protein is intrinsically disordered, and that the experimentally mapped interaction determinants---the APC/C KEN box, the CDK1/ERK phospho-sites and the PDS5-binding FGF motif---lie within intrinsically disordered regions, whereas the only folded element is the short C-terminal Sororin domain. Six of the seven proline-directed (S/T-P) phospho-sites, including the ERK2 target Ser209, lie within these disordered regions, and the seventh in the short linker adjoining the FGF motif; none is in the folded C-terminal domain. Taken together, the results indicate that Sororin operates as a "fuzzy" interaction hub whose partners are engaged through disordered segments and short linear motifs rather than a globular scaffold, providing a structural rationale for its dense, phosphorylation- and ubiquitylation-switchable interactome.
+
+\vspace{0.4em}
+\noindent\textbf{Key words:} Sororin; CDCA5; cohesin; intrinsic disorder; fuzzy complex; phospho-interactome; SPOP
+\end{abstract}
+
+\section{Introduction}
+
+Faithful segregation of the genome requires that the two sister chromatids produced during DNA replication remain physically tethered until anaphase. This tethering, sister-chromatid cohesion, is provided by the cohesin complex, a ring formed by SMC1A, SMC3 and the kleisin RAD21 together with a STAG1/STAG2 subunit \citep{nasmyth2009}. Cohesin is dynamically loaded and released from chromatin, and the balance between retention and release is set by two antagonistic regulators that both dock onto the HEAT-repeat subunit PDS5: WAPL, which opens the ring and releases cohesin, and Sororin, which locks it \citep{nishiyama2010,ouyang2016}.
+
+Sororin, encoded by \textit{CDCA5}, was originally identified as a substrate of the anaphase-promoting complex/cyclosome (APC/C) that is required for cohesion in vertebrates \citep{rankin2005}. It is a small (252-residue) protein that is expressed and active only after S phase; it counteracts WAPL by competing for a shared binding surface on PDS5, thereby stabilising the acetylated, cohesive state of cohesin \citep{nishiyama2010}. During prophase this protective activity is dismantled: mitotic kinases phosphorylate Sororin, displacing it from PDS5 and unleashing WAPL to remove cohesin from chromosome arms \citep{nishiyama2013,dreier2011}. Beyond the cell cycle, CDCA5 is over-expressed in several carcinomas; an ERK/MAPK phospho-site (Ser209) has been implicated in lung carcinogenesis \citep{nguyen2010}, and more recently CDCA5 was shown to be a substrate of the Cullin-3/SPOP E3 ubiquitin ligase whose degradation modulates prostate-cancer progression \citep{zhang2021}.
+
+Although the individual partners of Sororin are well catalogued, its interactions have not, to our knowledge, been examined jointly against the structural state of the sequence that mediates them. Sororin has no reported globular fold apart from a short conserved C-terminal element \citep{wu2011}, which raises the question of how such a small protein can act as a switchable hub for the cohesin machinery. The central question of this project is therefore whether the partners of Sororin are engaged through folded domains or through intrinsically disordered regions (IDRs) \citep{vanderlee2014}, and whether the phosphorylation events that toggle these interactions are themselves located in disordered segments. This framing connects the systems-biology description of CDCA5 to the concept of "fuzzy" complexes, in which disordered regions and short linear motifs retain conformational heterogeneity even in the bound state and provide a substrate for regulation by post-translational modification \citep{tompa2008,fuxreiter2018,wright2015}.
+
+To translate this question into a computable form, we assembled a CDCA5-centred interaction network from STRING and curated it against the literature, computed per-residue disorder and disordered-binding propensities along the full sequence with IUPred2 and ANCHOR2, and mapped the experimentally defined interaction motifs and phospho-sites onto the resulting disorder profile. The interaction network then defines \textit{who} binds Sororin, the disorder profile defines \textit{where} on the sequence they bind and in \textit{what} structural context, and the phospho-site map defines \textit{how} these contacts are switched.
+
+\section{Methods}
+
+\subsection{Dataset assembly}
+The reference sequence and functional annotation of human Sororin were retrieved from the UniProt entry Q96FF9 (CDCA5\_HUMAN, 252 residues) \citep{uniprot2025}, including curated region, motif and modified-residue features. The CDCA5-centred protein--protein interaction network was obtained from the STRING database (v12, \textit{Homo sapiens}) \citep{szklarczyk2023}, using the interaction-partners and network endpoints. Two regulatory partners that are established in the primary literature but absent from the high-confidence STRING neighbourhood, ERK2 (MAPK1) \citep{nguyen2010} and SPOP \citep{zhang2021}, were added as curated edges to Sororin. Interaction determinants and post-translational modifications used for the mapping analysis (the KEN box, the FGF motif, the CDK1/ERK phospho-sites and the C-terminal Sororin domain) were taken from UniProt feature annotations and cross-checked against the corresponding experimental studies \citep{rankin2005,ouyang2016,wu2011,nishiyama2013,nguyen2010}.
+
+\subsection{Methods used for analysis}
+\textit{Interaction network.} STRING interactions with a combined score below $0.4$ were discarded and the remaining associations were represented as an undirected graph $G=(V,E)$. Network topology was summarised by the numbers of nodes $|V|$ and edges $|E|$, the density $2|E|/(|V|(|V|-1))$, and the degree of each node; the confidence of each Sororin edge was recorded as its STRING combined score. Nodes were annotated by functional class (cohesin core, cohesin regulators, mitotic kinases, APC/C--separase, ubiquitin ligase).
+
+\textit{Disorder and disordered-binding prediction.} Per-residue intrinsic disorder was predicted with IUPred2 in "long" mode, and disordered protein-binding propensity with ANCHOR2, using the reference implementation and energy matrices of the method \citep{meszaros2018,dosztanyi2009}; residues with IUPred2 $>0.5$ were classified as disordered. For every annotated region and interaction motif we computed the mean IUPred2 and ANCHOR2 scores and the fraction of disordered residues, and we identified contiguous disordered ($>0.5$) and ANCHOR ($>0.5$) segments along the sequence.
+
+\textit{Phospho-interactome mapping.} Curated phosphorylation sites from UniProt were classified as proline-directed (S/T-P) when the residue immediately C-terminal was a proline, i.e.\ as candidate substrates of the proline-directed kinases CDK1 and ERK \citep{dreier2011,nguyen2010}; each site was then located within the disorder profile and annotated with its reported functional consequence.
+
+\subsection{Statistical analysis}
+Predictions were evaluated at the residue level. Region-level summaries are reported as means over the residues of each region and as the fraction of residues exceeding the disorder threshold; network confidence is reported as STRING combined scores in the interval $[0,1]$. No inferential test was applied, as the analysis is a descriptive integration of sequence, network and predictor outputs rather than a comparison between samples.
+
+\section{Results}
+
+\subsection{The Sororin interactome is a dense cohesin-centred module}
+We first asked which proteins define the immediate interaction neighbourhood of Sororin and how tightly they are interconnected. The CDCA5-centred STRING network, restricted to the cohesin machinery and its mitotic regulators, formed a single dense module of 16 nodes and 107 edges with a density of $0.89$ (Figure~\ref{fig:net}), a connectivity comparable to other tightly coupled cell-cycle modules. Sororin itself was a high-degree node (degree $=15$ of a possible $15$), and its edges to the cohesin regulators and core were among the most confident in the whole graph: PDS5A ($0.999$), WAPL ($0.998$), SMC3 ($0.994$), PDS5B ($0.990$) and RAD21 ($0.988$), followed by the mitotic kinase CDK1 ($0.979$) and the STAG and NIPBL--MAU2 loader subunits (Table~\ref{tab:net}). The APC/C activator CDC20 and the protease separase (ESPL1) were also recovered, consistent with Sororin being both a cohesion factor and an APC/C substrate.
+
+The two cancer-relevant regulators of the theme behaved differently from the cohesin partners. ERK2 (MAPK1) and SPOP did not appear in the high-confidence STRING neighbourhood of CDCA5 and were included as literature-curated edges (dashed, Figure~\ref{fig:net}); in the combined graph they remained peripheral, low-degree nodes attached almost exclusively to Sororin. This topology indicates that the canonical, high-confidence interactome of Sororin is essentially the cohesin cohesion--release machine, whereas the oncogenic ERK2 and SPOP inputs are regulatory cross-talk nodes that are not yet embedded in the curated cohesin map. Taken together, the network shows that Sororin is a central, high-confidence hub of the cohesin module and simultaneously a target of at least two peripheral regulatory pathways relevant to cancer.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.86\textwidth]{Fig1_interaction_network.pdf}
+\caption{\textbf{Sororin (CDCA5)-centred interaction network.} Nodes are proteins coloured by functional class and edges are STRING associations (combined score $\ge 0.4$); edge width and opacity scale with confidence. Node size scales with degree. Dashed red edges denote literature-curated regulatory interactions (ERK2/MAPK1 and SPOP) that are absent from the high-confidence STRING neighbourhood. The STRING module is a dense cohesin-centred graph (16 nodes, 107 edges, density $=0.89$) with Sororin as a high-degree hub; ERK2/MAPK1 and SPOP are shown as two additional literature-curated nodes.}
+\label{fig:net}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{\textit{High-confidence STRING partners of Sororin (CDCA5) and their functional class. Combined scores are STRING confidence values in $[0,1]$; the full module comprises 16 nodes and 107 edges (density $=0.89$).}}
+\label{tab:net}
+\small
+\begin{tabular}{llc}
+\toprule
+Partner & Functional class & STRING combined score \\
+\midrule
+PDS5A & Cohesin regulator (PDS5) & 0.999 \\
+WAPL  & Cohesin regulator (release) & 0.998 \\
+SMC3  & Cohesin core & 0.994 \\
+PDS5B & Cohesin regulator (PDS5) & 0.990 \\
+RAD21 & Cohesin core (kleisin) & 0.988 \\
+CDK1  & Mitotic kinase & 0.979 \\
+STAG2 & Cohesin core & 0.977 \\
+STAG1 & Cohesin core & 0.975 \\
+SMC1A & Cohesin core & 0.973 \\
+NIPBL & Cohesin loader & 0.970 \\
+AURKB & Mitotic kinase & 0.968 \\
+CDC20 & APC/C activator & 0.938 \\
+ESPL1 & Separase & 0.930 \\
+MAU2  & Cohesin loader & 0.917 \\
+PLK1  & Mitotic kinase & 0.893 \\
+\midrule
+ERK2 (MAPK1) & Cross-talk (literature) & --- \\
+SPOP & Ubiquitin ligase (literature) & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Interaction determinants map to disordered regions: Sororin as a fuzzy hub}
+Having established the partners, we next asked in what structural context they are bound, i.e.\ whether the sequence elements that mediate these interactions are folded or intrinsically disordered. Running IUPred2 and ANCHOR2 over the full 252-residue sequence showed that Sororin is predominantly disordered: $61.5\%$ of residues had IUPred2 $>0.5$ (mean score $0.61$), organised into three long disordered regions (residues 1--48, 72--142 and 199--222) separated by short segments of transient structure (Figure~\ref{fig:dis}). The only region with a robustly folded signature was the C-terminal conserved Sororin domain (residues 230--252; mean IUPred2 $0.31$, $0\%$ disordered), which is precisely the element shown experimentally to be required for cohesion and cohesin association \citep{wu2011}.
+
+Superimposing the experimentally defined interaction determinants onto this profile revealed that they lie, almost without exception, in disordered segments (Table~\ref{tab:map}). The APC/C-recognition KEN box (residues 88--90) sits in a fully disordered region (mean IUPred2 $0.64$); the ERK2 phospho-acceptor Ser209 lies on a disorder peak within the 199--222 IDR (IUPred2 $0.74$); and the PDS5-binding FGF motif (residues 166--168) maps to a short, locally ordered dip embedded within otherwise disordered sequence---the characteristic signature of a short linear motif / molecular-recognition feature that becomes structured only in context \citep{davey2012}. Consistent with a binding-competent disordered protein, ANCHOR2 predicted several disordered-binding segments spanning the N-terminal, central and C-terminal IDRs (residues 1--70, 78--118, 127--153, 198--204 and 227--240), which collectively cover the KEN box, the phospho-cluster and the region approaching the FGF motif. The contrast between the folded C-terminal domain and the disordered location of the KEN box, the FGF motif and the phospho-sites indicates that Sororin engages its partners chiefly through disordered segments and short linear motifs rather than through a globular interface. Taken together, these results support the view that Sororin behaves as a fuzzy interaction hub, in which a largely disordered chain presents multiple recognition elements whose local structure and accessibility can be tuned by modification.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{Fig2_disorder_map.pdf}
+\caption{\textbf{Disorder landscape of Sororin with interaction determinants annotated.} \textit{Top,} domain architecture: three intrinsically disordered regions (orange; UniProt 1--48, 72--142, 199--222), the folded C-terminal Sororin domain (blue), the KEN box and FGF motif, and proline-directed (S/T-P) phospho-sites (lollipops; the ERK2 target Ser209 in red). Bottom, per-residue IUPred2 disorder (red) and ANCHOR2 disordered-binding (blue) scores; the dashed line is the disorder threshold ($0.5$) and shaded bands mark the annotated IDRs. The APC/C KEN box and the ERK2 site Ser209 fall in disordered regions, the PDS5-binding FGF motif is a short ordered dip embedded in disorder, and the only folded element is the C-terminal Sororin domain.}
+\label{fig:dis}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{\textit{Mapping of Sororin interaction determinants onto the predicted disorder landscape. Region disorder is the mean IUPred2 score and the fraction of residues with IUPred2 $>0.5$ over the indicated residues.}}
+\label{tab:map}
+\small
+\begin{tabular}{lllcl}
+\toprule
+Determinant & Residues & Partner / role & Mean IUPred2 (\% dis.) & Structural context \\
+\midrule
+N-terminal IDR & 1--48 & loading / regulation & 0.82 (100\%) & disordered \\
+KEN box & 88--90 & APC/C (degradation) & 0.64 (100\%) & disordered \\
+Central IDR & 72--142 & phospho-cluster & 0.70 (90\%) & disordered \\
+FGF motif & 166--168 & PDS5A/B (cohesion) & 0.47 (33\%) & SLiM / ordered dip in IDR \\
+Ser209 site & 199--222 & ERK2 (phosphorylation) & 0.71 (96\%) & disordered \\
+Sororin domain & 230--252 & cohesin core association & 0.31 (0\%) & folded \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The phospho-interactome and SPOP ubiquitin cross-talk act through the disordered chain}
+Finally, we asked how the disordered interactome of Sororin is switched, by locating its regulatory modifications on the same profile. Of the thirteen curated phospho-sites, seven are proline-directed (S/T-P) and therefore candidate substrates of the proline-directed kinases CDK1 and ERK: Ser21, Ser75, Ser79, Thr111, Thr115, Thr159 and Ser209 (Table~\ref{tab:phos}). None lies in the folded C-terminal domain: six fall within the three intrinsically disordered regions and the seventh, Thr159, in the short linker immediately preceding the FGF motif. They flank the very determinants identified above: the central cluster (Ser75--Thr115) surrounds the KEN box, Thr159 abuts the PDS5-binding FGF motif, and Ser209 sits in the C-terminal IDR. This co-localisation provides a structural explanation for the established regulatory logic in which mitotic phosphorylation of Sororin by CDK1 (assisted by Aurora B) displaces it from PDS5 and relieves WAPL inhibition, dissolving arm cohesion \citep{nishiyama2013,dreier2011}: because the PDS5-binding FGF motif is a short linear element embedded in a disordered, heavily phosphorylatable context, phosphorylation of the surrounding chain can switch the interaction off without requiring the disruption of a folded domain, exactly as expected for a fuzzy complex \citep{tompa2008,fuxreiter2018}.
+
+The same disordered architecture rationalises the two cancer-associated inputs. The ERK2/MAPK site Ser209, reported to be phosphorylated during lung carcinogenesis \citep{nguyen2010}, is one of the most disordered positions in the protein, i.e.\ fully accessible to a proline-directed kinase; and the SPOP-dependent degradation that controls CDCA5 levels in prostate cancer \citep{zhang2021} requires a SPOP-binding degron, a class of short linear motif that operates only in disordered, accessible sequence. Thus both the phospho-switch that governs cohesion and the ubiquitin-dependent control of Sororin abundance are implemented on the same disordered scaffold. Taken together, the phospho-site map indicates that the regulation of Sororin---mitotic inactivation, oncogenic ERK phosphorylation and SPOP-mediated turnover---is concentrated on its intrinsically disordered regions, consistent with a fuzzy hub whose interactions are designed to be toggled by post-translational modification.
+
+\begin{table}[t]
+\centering
+\caption{\textit{Proline-directed (S/T-P) phosphorylation sites of Sororin and their context. Six of the seven candidate CDK1/ERK sites lie within intrinsically disordered regions and the seventh (Thr159) in the short linker preceding the FGF motif; none is in the folded C-terminal domain.}}
+\label{tab:phos}
+\small
+\begin{tabular}{llll}
+\toprule
+Site & Motif (S/T-P) & Disordered region & Reported role / kinase \\
+\midrule
+Ser21  & SP & 1--48 (N-terminal IDR)   & CDK1 consensus \citep{dreier2011} \\
+Ser75  & SP & 72--142 (central IDR)    & CDK1 consensus \citep{dreier2011} \\
+Ser79  & SP & 72--142 (central IDR)    & ERK/MAPK site \citep{nguyen2010} \\
+Thr111 & TP & 72--142 (central IDR)    & CDK1 consensus \citep{dreier2011} \\
+Thr115 & TP & 72--142 (central IDR)    & CDK1 consensus \citep{dreier2011} \\
+Thr159 & TP & linker (pre-FGF)         & CDK1 consensus \citep{dreier2011} \\
+Ser209 & SP & 199--222 (C-terminal IDR)& ERK2 site, lung cancer \citep{nguyen2010} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Discussion and Conclusion}
+
+We set out to determine whether Sororin engages its partners through folded domains or through intrinsically disordered regions, and whether the modifications that toggle those interactions are located in disordered sequence. Integrating a cohesin-centred interaction network with per-residue disorder and binding predictions and with the experimentally defined interaction motifs, we found that Sororin is a small, high-confidence hub of a dense cohesin module (density $0.89$) that is itself $\sim\!62\%$ intrinsically disordered; that its APC/C, PDS5 and ERK2 determinants all reside in disordered segments while only the short C-terminal domain is folded; and that its seven proline-directed phospho-sites lie outside the folded C-terminal domain, in the disordered regions and adjoining linker surrounding those determinants. These observations answer the question directly: the Sororin interactome is built on disorder.
+
+This picture is consistent with, and adds a structural layer to, the established biology of Sororin. Nishiyama and colleagues demonstrated that mitotic phosphorylation of Sororin by Cdk1 and Aurora B removes it from PDS5 and activates WAPL \citep{nishiyama2013}, and Dreier \textit{et al.} showed that Cdk1 phosphorylation regulates Sororin \citep{dreier2011}; our finding that the proline-directed sites cluster in the disordered regions flanking the PDS5-binding motif supports a mechanism in which the switch is implemented on a disordered, modification-dense chain rather than through a rigid interface. The crystal structure of PDS5B bound to the shared FGF peptide of WAPL and Sororin \citep{ouyang2016} shows that this contact is made by a short linear motif presented from otherwise unstructured sequence, in agreement with our observation that the FGF motif is a locally ordered dip embedded in disorder. In addition, the requirement of the conserved C-terminal Sororin element for cohesion \citep{wu2011} matches the single folded region in our profile, suggesting a division of labour between a disordered, regulatory body and a compact functional C-terminus. Our results therefore align with, and give insight into, prior experimental work by explaining \textit{why} Sororin's interactions are so readily switchable.
+
+The framework also accommodates the two cancer-associated regulators that were only peripheral in the network. The ERK2 site Ser209, phosphorylated in lung carcinogenesis \citep{nguyen2010}, is among the most disordered and accessible residues of the protein, and the SPOP-dependent degradation that controls CDCA5 abundance and prognosis in prostate cancer \citep{zhang2021} depends on a degron that, like all SPOP substrate motifs, must be presented from accessible, disordered sequence. Placing these inputs on the disorder map suggests a unifying model: Sororin is a fuzzy interaction hub \citep{tompa2008,fuxreiter2018}, consistent with the enrichment of intrinsic disorder among interaction hubs \citep{haynes2006}, in which a mostly disordered chain displays a set of short linear motifs---the KEN degron, the FGF motif and the SPOP degron---interleaved with proline-directed phospho-sites, so that kinases and ubiquitin ligases can turn individual contacts on or off without remodelling a folded core. We propose that the very disorder of Sororin is what makes it an efficient, multiply-regulated node: it converts a small protein into a programmable switchboard for cohesin.
+
+Two limitations temper these conclusions. First, disorder and binding propensities are predictions; although IUPred2 and ANCHOR2 are well validated and the folded C-terminal domain and the FGF dip are recovered as expected, direct structural confirmation of the bound states would strengthen the fuzzy-hub interpretation. Second, the ERK2 and SPOP edges rest on individual studies and are not yet part of curated interaction databases, so their network context is provisional.
+
+In conclusion, a disorder-centred systems analysis indicates that Sororin functions as a fuzzy cohesin hub whose partners---the cohesin core, PDS5A/B and WAPL, the APC/C, and the cancer-linked ERK2 and SPOP pathways---are engaged and switched through intrinsically disordered regions and short linear motifs rather than a globular scaffold. Looking forward, the model makes testable predictions: phospho-mimetic substitutions within the disordered central and C-terminal regions should quantitatively tune PDS5 binding and Sororin turnover, and mapping the SPOP degron onto the sequence should place it in a predicted disordered, ANCHOR-positive segment. Experimental dissection of these disordered elements, ideally combined with an ensemble structural description of the Sororin--PDS5 complex, would test whether targeting a disordered hub offers a route to modulating cohesion in cancers where CDCA5 is over-expressed.
+
+\begin{thebibliography}{99}
+\setlength{\itemsep}{1pt}
+
+\bibitem[Nasmyth and Haering(2009)]{nasmyth2009} Nasmyth K, Haering CH. Cohesin: its roles and mechanisms. \textit{Annu Rev Genet}. 2009;43:525--558. doi:10.1146/annurev-genet-102108-134233.
+
+\bibitem[Rankin et al.(2005)]{rankin2005} Rankin S, Ayad NG, Kirschner MW. Sororin, a substrate of the anaphase-promoting complex, is required for sister chromatid cohesion in vertebrates. \textit{Mol Cell}. 2005;18(2):185--200. doi:10.1016/j.molcel.2005.03.017.
+
+\bibitem[Nishiyama et al.(2010)]{nishiyama2010} Nishiyama T, Ladurner R, Schmitz J, et al. Sororin mediates sister chromatid cohesion by antagonizing Wapl. \textit{Cell}. 2010;143(5):737--749. doi:10.1016/j.cell.2010.10.031.
+
+\bibitem[Dreier et al.(2011)]{dreier2011} Dreier MR, Bekier ME 2nd, Taylor WR. Regulation of sororin by Cdk1-mediated phosphorylation. \textit{J Cell Sci}. 2011;124(Pt 17):2976--2987. doi:10.1242/jcs.085431.
+
+\bibitem[Wu et al.(2011)]{wu2011} Wu FM, Nguyen JV, Rankin S. A conserved motif at the C terminus of sororin is required for sister chromatid cohesion. \textit{J Biol Chem}. 2011;286(5):3579--3586. doi:10.1074/jbc.M110.196758.
+
+\bibitem[Nishiyama et al.(2013)]{nishiyama2013} Nishiyama T, Sykora MM, Huis in 't Veld PJ, Mechtler K, Peters JM. Aurora B and Cdk1 mediate Wapl activation and release of acetylated cohesin from chromosomes by phosphorylating Sororin. \textit{Proc Natl Acad Sci USA}. 2013;110(33):13404--13409. doi:10.1073/pnas.1305020110.
+
+\bibitem[Ouyang et al.(2016)]{ouyang2016} Ouyang Z, Zheng G, Tomchick DR, Luo X, Yu H. Structural basis and IP6 requirement for Pds5-dependent cohesin dynamics. \textit{Mol Cell}. 2016;62(2):248--259. doi:10.1016/j.molcel.2016.02.033.
+
+\bibitem[Nguyen et al.(2010)]{nguyen2010} Nguyen MH, Koinuma J, Ueda K, et al. Phosphorylation and activation of cell division cycle associated 5 by mitogen-activated protein kinase play a crucial role in human lung carcinogenesis. \textit{Cancer Res}. 2010;70(13):5337--5347. doi:10.1158/0008-5472.CAN-09-4372.
+
+\bibitem[Luo et al.(2021)]{zhang2021} Luo Z, Wang J, Zhu Y, et al. SPOP promotes CDCA5 degradation to regulate prostate cancer progression via the AKT pathway. \textit{Neoplasia}. 2021;23(10):1037--1047. doi:10.1016/j.neo.2021.08.002.
+
+\bibitem[Tompa and Fuxreiter(2008)]{tompa2008} Tompa P, Fuxreiter M. Fuzzy complexes: polymorphism and structural disorder in protein-protein interactions. \textit{Trends Biochem Sci}. 2008;33(1):2--8. doi:10.1016/j.tibs.2007.10.003.
+
+\bibitem[Fuxreiter(2018)]{fuxreiter2018} Fuxreiter M. Fuzziness in protein interactions---a historical perspective. \textit{J Mol Biol}. 2018;430(16):2278--2287. doi:10.1016/j.jmb.2018.02.015.
+
+\bibitem[Wright and Dyson(2015)]{wright2015} Wright PE, Dyson HJ. Intrinsically disordered proteins in cellular signalling and regulation. \textit{Nat Rev Mol Cell Biol}. 2015;16(1):18--29. doi:10.1038/nrm3920.
+
+\bibitem[Haynes et al.(2006)]{haynes2006} Haynes C, Oldfield CJ, Ji F, et al. Intrinsic disorder is a common feature of hub proteins from four eukaryotic interactomes. \textit{PLoS Comput Biol}. 2006;2(8):e100. doi:10.1371/journal.pcbi.0020100.
+
+\bibitem[Van der Lee et al.(2014)]{vanderlee2014} van der Lee R, Buljan M, Lang B, et al. Classification of intrinsically disordered regions and proteins. \textit{Chem Rev}. 2014;114(13):6589--6631. doi:10.1021/cr400525m.
+
+\bibitem[Davey et al.(2012)]{davey2012} Davey NE, Van Roey K, Weatheritt RJ, et al. Attributes of short linear motifs. \textit{Mol Biosyst}. 2012;8(1):268--281. doi:10.1039/c1mb05231d.
+
+\bibitem[M\'esz\'aros et al.(2018)]{meszaros2018} M\'esz\'aros B, Erd\H{o}s G, Doszt\'anyi Z. IUPred2A: context-dependent prediction of protein disorder as a function of redox state and protein binding. \textit{Nucleic Acids Res}. 2018;46(W1):W329--W337. doi:10.1093/nar/gky384.
+
+\bibitem[Doszt\'anyi et al.(2009)]{dosztanyi2009} Doszt\'anyi Z, M\'esz\'aros B, Simon I. ANCHOR: web server for predicting protein binding regions in disordered proteins. \textit{Bioinformatics}. 2009;25(20):2745--2746. doi:10.1093/bioinformatics/btp518.
+
+\bibitem[Szklarczyk et al.(2023)]{szklarczyk2023} Szklarczyk D, Kirsch R, Koutrouli M, et al. The STRING database in 2023: protein--protein association networks and functional enrichment analyses. \textit{Nucleic Acids Res}. 2023;51(D1):D638--D646. doi:10.1093/nar/gkac1000.
+
+\bibitem[UniProt Consortium(2025)]{uniprot2025} The UniProt Consortium. UniProt: the Universal Protein Knowledgebase in 2025. \textit{Nucleic Acids Res}. 2025;53(D1):D609--D617. Entry Q96FF9 (CDCA5\_HUMAN).
+
+\end{thebibliography}
+
+\end{document}

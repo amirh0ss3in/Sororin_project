@@ -1,0 +1,26 @@
+type	start	end	description
+Chain	1	252	Sororin
+Region	1	48	Disordered
+Region	72	142	Disordered
+Region	199	222	Disordered
+Region	230	252	C-terminal Sororin domain
+Motif	88	90	KEN box
+Motif	166	168	FGF motif
+Compositional bias	86	104	Basic and acidic residues
+Compositional bias	105	116	Low complexity
+Compositional bias	124	140	Basic and acidic residues
+Modified residue	21	21	Phosphoserine
+Modified residue	33	33	Phosphoserine
+Modified residue	35	35	Phosphoserine
+Modified residue	75	75	Phosphoserine
+Modified residue	79	79	Phosphoserine
+Modified residue	83	83	Phosphoserine
+Modified residue	98	98	Phosphothreonine
+Modified residue	107	107	Phosphoserine
+Modified residue	111	111	Phosphothreonine
+Modified residue	115	115	Phosphothreonine
+Modified residue	154	154	Phosphoserine
+Modified residue	159	159	Phosphothreonine
+Modified residue	209	209	Phosphoserine
+Natural variant	156	156	in dbSNP:rs34020666
+Mutagenesis	166	168	Alters interaction with PDS5A and PDS5B and the cohesin complex.

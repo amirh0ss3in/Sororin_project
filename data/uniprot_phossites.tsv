@@ -1,0 +1,14 @@
+position	residue	next_residue	proline_directed	description
+21	S	P	yes	Phosphoserine
+33	S	G	no	Phosphoserine
+35	S	E	no	Phosphoserine
+75	S	P	yes	Phosphoserine
+79	S	P	yes	Phosphoserine
+83	S	F	no	Phosphoserine
+98	T	K	no	Phosphothreonine
+107	S	V	no	Phosphoserine
+111	T	P	yes	Phosphothreonine
+115	T	P	yes	Phosphothreonine
+154	S	A	no	Phosphoserine
+159	T	P	yes	Phosphothreonine
+209	S	P	yes	Phosphoserine
