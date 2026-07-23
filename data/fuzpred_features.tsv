@@ -1,0 +1,16 @@
+type	description	start	end
+PTM	Phosphoserine	21	21
+PTM	Phosphoserine	33	33
+PTM	Phosphoserine	35	35
+PTM	Phosphoserine	75	75
+PTM	Phosphoserine	79	79
+PTM	Phosphoserine	83	83
+PTM	Phosphothreonine	98	98
+PTM	Phosphoserine	107	107
+PTM	Phosphothreonine	111	111
+PTM	Phosphothreonine	115	115
+PTM	Phosphoserine	154	154
+PTM	Phosphothreonine	159	159
+PTM	Phosphoserine	209	209
+Pfam	Sororin, middle region	89	214
+Pfam	Sororin C-terminal region	229	252

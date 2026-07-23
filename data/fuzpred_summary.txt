@@ -1,0 +1,13 @@
+FuzPred prediction for Sororin/CDCA5 (Q96FF9), 252 residues
+pDO median 0.395  (below 0.5 => leans disordered/fuzzy binding)
+MBM mean 0.648  median 0.718
+multimodal residues (MBM>0.65): 68%
+fuzzy-leaning residues (pDD>0.5): 62%
+Disorder-to-Order region: 63 res (25%)
+Context-dependent region: 160 res (63%)
+Disorder-to-Disorder region: 132 res (52%)
+
+KEN box          88-90: pDO=0.87 pDD=0.13 MBM=0.49
+FGF motif        166-168: pDO=0.34 pDD=0.66 MBM=0.70
+Ser209           209-209: pDO=0.33 pDD=0.67 MBM=0.80
+Sororin domain   230-252: pDO=0.66 pDD=0.34 MBM=0.65

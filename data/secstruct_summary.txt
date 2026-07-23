@@ -1,0 +1,18 @@
+PSIPRED (secondary structure) + DISOPRED3 (disorder) for Sororin/CDCA5
+Residues: 252
+PSIPRED overall: helix 18.7%  strand 3.2%  coil 78.2%
+DISOPRED3 disordered: 63.9% (IUPred2 in script 03 gave 61.5%)
+PSIPRED helix segments (>=4 res): [(133, 145), (225, 245)]
+PSIPRED strand segments: [(59, 63), (249, 251)]
+
+region                         range  %helix %strand  %coil  %disord
+N-terminal IDR                  1-48      0%      0%   100%     100%
+Central IDR                   72-142     21%      0%    79%      85%
+C-terminal IDR               199-222      8%      0%    92%      46%
+Sororin domain (folded)      230-252     70%     13%    17%       0%
+KEN box (APC/C)                88-90      0%      0%   100%     100%
+FGF motif (PDS5A/B)          166-168      0%      0%   100%       0%
+MAPK docking (ERK2)            77-84     12%      0%    88%     100%
+SPOP degron 1                122-126      0%      0%   100%     100%
+SPOP degron 2                155-159      0%      0%   100%     100%
+PLK1 motif                   201-207      0%      0%   100%       0%

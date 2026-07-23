@@ -1,0 +1,22 @@
+ELM prediction for Sororin/CDCA5 (Q96FF9)
+Raw matches returned by ELM: 159
+Matches passing ELM's own filters: 135
+Curated, network-linked motifs kept for the paper: 14
+
+ELM class                       range partner           meanIUP   %dis  annotated
+MOD_ProDKin_1                   18-24 CDK1                0.930   100%  False
+MOD_ProDKin_1                   45-51 CDK1                0.521    57%  False
+MOD_ProDKin_1                   72-78 CDK1                0.537    57%  False
+MOD_ProDKin_1                   76-82 CDK1                0.539    57%  False
+DOC_MAPK_gen_1                  77-84 MAPK1 (ERK2)        0.589    75%  False
+DEG_APCC_KENBOX_2               87-91 CDC20 / APC-C       0.630   100%  True
+MOD_ProDKin_1                 108-114 CDK1                0.801   100%  False
+MOD_ProDKin_1                 112-118 CDK1                0.865   100%  False
+DEG_SPOP_SBC_1                122-126 SPOP                0.852   100%  False
+DEG_SPOP_SBC_1                155-159 SPOP                0.507    40%  False
+MOD_ProDKin_1                 156-162 CDK1                0.489    29%  False
+MOD_ProDKin_1                 178-184 CDK1                0.408     0%  False
+MOD_Plk_1                     201-207 PLK1                0.666   100%  False
+MOD_ProDKin_1                 206-212 CDK1                0.791   100%  False
+
+Interpretation: every retained motif links a specific short sequence element to a partner already present in the network (or, for SPOP, in the literature-curated edge), and all but the two motifs closest to the FGF SLiM sit predominantly in disordered sequence -- i.e. the linear motifs, not disorder in the abstract, are the concrete mechanistic link between the interactome and the sequence.

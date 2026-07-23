@@ -1,1 +1,5 @@
 STUDY_GUIDE.md
+*.aux
+*.log
+*.out
+figures/*preview*
