@@ -1,0 +1,4 @@
+sororin_wapl.png:
+    https://www.nature.com/articles/s41467-026-70484-2/figures/9
+    Fig. 9: Interaction between Sororin and the RAD21-SMC3 interface is dispensable for cohesion in the absence of Wapl.
+
