@@ -4,3 +4,12 @@ sororin_wapl.png:
 
 Simplified-models-of-alpha-helix-b-sheet-and-extended-coil-structures.tif:
     DOI: 10.3390/molecules30010128
+
+HWB-NMR_-_900MHz_-_21.2_Tesla.jpg:
+    Public domain, https://en.wikipedia.org/wiki/Nuclear_magnetic_resonance_spectroscopy
+
+ChatGPT Image Jul 25, 2026, 10_17_54 PM.png:
+    Generated using OpenAI ChatGPT (AI-assisted illustration), July 25, 2026.
+
+metabolic-network-reconstruction1.jpg:
+    https://pharmaceuticalintelligence.com/metabolic-network-reconstruction-2/
