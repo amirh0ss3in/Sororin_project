@@ -106,15 +106,23 @@ def autocrop(im):
 
 
 def figure(S, R):
+    from matplotlib.gridspec import GridSpec
     pos = np.array(sorted(S)); n = len(pos)
     pdo = np.array([S[i][0] for i in pos]); mbm = np.array([S[i][2] for i in pos])
 
     have_af = HAVE_PIL and os.path.exists(os.path.join(FIG_DIR, "AF-Q96FF9-F1.png"))
-    nrows = 3 if have_af else 2
-    hr = [4, 1.7, 3] if have_af else [4, 1.7]
-    fig, axes = plt.subplots(nrows, 1, figsize=(11, 6.8 if have_af else 4.6),
-                             gridspec_kw={"height_ratios": hr})
-    ax, axR = axes[0], axes[1]
+    if have_af:
+        # two columns: left = profile (top) + region tracks (bottom); right = AlphaFold model
+        fig = plt.figure(figsize=(12, 4.8))
+        gs = GridSpec(2, 2, width_ratios=[4.3, 1.0], height_ratios=[4, 1.7],
+                      wspace=0.04, hspace=0.18)
+        ax = fig.add_subplot(gs[0, 0])
+        axR = fig.add_subplot(gs[1, 0])
+        axA = fig.add_subplot(gs[:, 1])
+    else:
+        fig, (ax, axR) = plt.subplots(2, 1, figsize=(11, 4.6),
+                                      gridspec_kw={"height_ratios": [4, 1.7]})
+        axA = None
 
     ax.plot(pos, pdo, color="#2166ac", lw=1.6, label="pDO (fold-on-binding)")
     ax.plot(pos, mbm, color="#1a9850", lw=1.3, alpha=.8, label="MBM (binding-mode multiplicity)")
@@ -143,14 +151,13 @@ def figure(S, R):
         axR.text(0, y + 0.5, REGSHORT[t], ha="right", va="center", fontsize=6.3,
                  color=REGCOL[t], fontweight="bold")
 
-    if have_af:
-        axA = axes[2]; axA.axis("off")
+    if axA is not None:
+        axA.axis("off")
         im = Image.open(os.path.join(FIG_DIR, "AF-Q96FF9-F1.png"))
         axA.imshow(autocrop(im))
-        axA.set_title("AlphaFold model (blue = fold-on-binding helices; rest disordered)",
-                      fontsize=8, pad=2)
+        axA.set_title("AlphaFold model\n(blue = fold-on-binding\nhelices; rest disordered)",
+                      fontsize=7, pad=4)
 
-    plt.tight_layout(h_pad=0.5)
     out = os.path.join(FIG_DIR, "Fig6_fuzpred.pdf")
     plt.savefig(out, bbox_inches="tight"); plt.close(fig)
     print(f"Wrote {out}")

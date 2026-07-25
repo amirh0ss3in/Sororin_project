@@ -12,6 +12,7 @@
 \usepackage{authblk}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{xcolor}
+\usepackage{placeins}
 
 \titleformat{\section}{\normalfont\large\bfseries}{\thesection}{0.7em}{\uppercase}
 \titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
@@ -73,14 +74,14 @@ The two cancer-relevant regulators of the theme behaved differently from the coh
 
 To confirm that this module represents a coherent biological function rather than an arbitrary selection of proteins, we retrieved functional enrichment for the sixteen nodes with the stringApp. The module was far more interconnected than expected for a random set of proteins of the same size (STRING PPI enrichment $p<10^{-16}$), and its enriched annotations were dominated, at very low false-discovery rates, by precisely the expected biology (Table~\ref{tab:enrich}): the leading Gene Ontology biological processes were sister-chromatid cohesion (GO:0007062, FDR $=1.4\times10^{-24}$) and sister-chromatid segregation (FDR $=2.3\times10^{-24}$); the top cellular components were the chromosomal and centromeric regions; the enriched KEGG pathway was cell cycle (hsa04110, FDR $=6\times10^{-14}$); and the leading Reactome pathways were cohesin loading onto chromatin and the establishment and resolution of sister-chromatid cohesion. This enrichment demonstrates quantitatively that the high-confidence CDCA5 neighbourhood analysed here is the sister-chromatid-cohesion machinery itself, providing a functional anchor for the interaction-determinant and disorder analyses that follow.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.86\textwidth]{Fig1_interaction_network.pdf}
 \caption{\textbf{Sororin (CDCA5)-centred interaction network.} Nodes are proteins coloured by functional class and edges are STRING associations (combined score $\ge 0.4$); edge width and opacity scale with confidence. Node size scales with degree. Dashed red edges denote literature-curated regulatory interactions (ERK2/MAPK1 and SPOP) that are absent from the high-confidence STRING neighbourhood. The STRING module is a dense cohesin-centred graph (16 nodes, 107 edges, density $=0.89$) with Sororin as a high-degree hub; ERK2/MAPK1 and SPOP are shown as two additional literature-curated nodes.}
 \label{fig:net}
 \end{figure}
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \caption{\textit{High-confidence STRING partners of Sororin (CDCA5) and their functional class. Combined scores are STRING confidence values in $[0,1]$; the full module comprises 16 nodes and 107 edges (density $=0.89$).}}
 \label{tab:net}
@@ -111,14 +112,14 @@ SPOP & Ubiquitin ligase (literature) & --- \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{Fig5_cytoscape_network.png}
 \caption{\textbf{Independent reconstruction of the cohesin module in Cytoscape.} The same 16-protein module was retrieved from STRING and rendered with the Cytoscape stringApp; node glyphs show STRING structure previews and edge thickness scales with the combined score. Cytoscape's network analyzer returned the same topology as the custom pipeline (16 nodes, 107 edges, density $0.892$, clustering coefficient $0.925$), with CDCA5 a maximally connected node (degree $15$).}
 \label{fig:cyto}
 \end{figure}
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \caption{\textit{Representative functional enrichment of the 16-protein module (stringApp, whole-genome background, FDR $<0.05$). The module shows a STRING PPI enrichment $p<10^{-16}$; the terms below are the most significant in each source, all reflecting sister-chromatid cohesion and cell-cycle function.}}
 \label{tab:enrich}
@@ -138,6 +139,7 @@ Reactome & HSA-2468052 & Establishment of sister chromatid cohesion & $4.4\times
 \end{tabular}
 \end{table}
 
+\FloatBarrier
 \subsection{Interaction determinants map to disordered regions: Sororin as a fuzzy hub}
 Having established the partners, we next asked in what structural context they are bound, i.e.\ whether the sequence elements that mediate these interactions are folded or intrinsically disordered. Running IUPred2 and ANCHOR2 over the full 252-residue sequence showed that Sororin is predominantly disordered: $61.5\%$ of residues had IUPred2 $>0.5$ (mean score $0.61$), organised into three long disordered regions (residues 1--48, 72--142 and 199--222) separated by short segments of transient structure (Figure~\ref{fig:dis}). The only region with a robustly folded signature was the C-terminal conserved Sororin domain (residues 230--252; mean IUPred2 $0.31$, $0\%$ disordered), which is precisely the element shown experimentally to be required for cohesion and cohesin association \citep{wu2011}.
 
@@ -145,21 +147,21 @@ Superimposing the experimentally defined interaction determinants onto this prof
 
 We tested this fuzzy-hub interpretation directly with FuzPred, a sequence-based predictor of context-dependent binding behaviour built specifically to quantify fuzziness \citep{miskei2020,horvath2020}. Consistent with a fuzzy hub, Sororin was predicted to engage partners predominantly without folding: the median disorder-to-order probability was only $0.40$, $62\%$ of residues favoured disorder-to-disorder (fuzzy) binding, and $68\%$ showed a high multiplicity of binding modes (MBM $>0.65$), i.e.\ the capacity to bind in several alternative modes (Figure~\ref{fig:fuz}). FuzPred classified $63\%$ of the sequence as context-dependent and only $25\%$ as fold-on-binding, the latter confined to three short segments including the C-terminal Sororin domain (residues 231--248). Mapping the interaction determinants onto this landscape reproduced the division of labour identified above: the C-terminal domain is fold-on-binding (pDO $0.66$), whereas the PDS5-binding FGF motif (pDO $0.34$, pDD $0.66$, MBM $0.70$) and the ERK2 site Ser209 (pDO $0.33$, MBM $0.80$) lie in fuzzy, multi-mode regions, while the APC/C KEN box is the expected exception, predicted to fold upon binding (pDO $0.87$) as befits a degron recognised by a folded receptor. FuzPred additionally annotated the two Pfam families of Sororin---the middle region (89--214) and the C-terminal region (229--252)---of which only the C-terminal family coincides with the ordered, fold-on-binding segment. That an independent method developed specifically to detect fuzziness returns this multi-mode, mostly-disordered binding picture provides quantitative, method-orthogonal support for describing Sororin as a fuzzy interaction hub.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{Fig2_disorder_map.pdf}
 \caption{\textbf{Disorder landscape of Sororin with interaction determinants annotated.} \textit{Top,} domain architecture: three intrinsically disordered regions (orange; UniProt 1--48, 72--142, 199--222), the folded C-terminal Sororin domain (blue), the KEN box and FGF motif, and proline-directed (S/T-P) phospho-sites (lollipops; the ERK2 target Ser209 in red). Bottom, per-residue IUPred2 disorder (red) and ANCHOR2 disordered-binding (blue) scores; the dashed line is the disorder threshold ($0.5$) and shaded bands mark the annotated IDRs. The APC/C KEN box and the ERK2 site Ser209 fall in disordered regions, the PDS5-binding FGF motif is a short ordered dip embedded in disorder, and the only folded element is the C-terminal Sororin domain.}
 \label{fig:dis}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{Fig6_fuzpred.pdf}
-\caption{\textbf{FuzPred binding-mode analysis of Sororin.} Top, per-residue probability of disorder-to-order (fold-on-binding) binding (pDO, blue) and multiplicity of binding modes (MBM, green); dashed lines mark the $0.5$ and $0.65$ references and red bands the interaction determinants. Middle, FuzPred region classification in three overlapping tracks (fold-on-binding, context-dependent, and stays-disordered). Bottom, the AlphaFold model (fold-on-binding helices in blue, the remainder disordered). Most of the protein is context-dependent and multi-mode; only three short segments, including the C-terminal domain, fold on binding.}
+\caption{\textbf{FuzPred binding-mode analysis of Sororin.} Left (top), per-residue probability of disorder-to-order (fold-on-binding) binding (pDO, blue) and multiplicity of binding modes (MBM, green); dashed lines mark the $0.5$ and $0.65$ references and red bands the interaction determinants. Left (bottom), FuzPred region classification in three overlapping tracks (fold-on-binding, context-dependent, and stays-disordered). Right, the AlphaFold model (fold-on-binding helices in blue, the remainder disordered). Most of the protein is context-dependent and multi-mode; only three short segments, including the C-terminal domain, fold on binding.}
 \label{fig:fuz}
 \end{figure}
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \caption{\textit{Mapping of Sororin interaction determinants onto the predicted disorder landscape. Region disorder is the mean IUPred2 score and the fraction of residues with IUPred2 $>0.5$ over the indicated residues.}}
 \label{tab:map}
@@ -178,12 +180,13 @@ Sororin domain & 230--252 & cohesin core association & 0.31 (0\%) & folded \\
 \end{tabular}
 \end{table}
 
+\FloatBarrier
 \subsection{The phospho-interactome and SPOP ubiquitin cross-talk act through the disordered chain}
 Finally, we asked how the disordered interactome of Sororin is switched, by locating its regulatory modifications on the same profile. Of the thirteen curated phospho-sites, seven are proline-directed (S/T-P) and therefore candidate substrates of the proline-directed kinases CDK1 and ERK: Ser21, Ser75, Ser79, Thr111, Thr115, Thr159 and Ser209 (Table~\ref{tab:phos}). None lies in the folded C-terminal domain: six fall within the three intrinsically disordered regions and the seventh, Thr159, in the short linker immediately preceding the FGF motif. They flank the very determinants identified above: the central cluster (Ser75--Thr115) surrounds the KEN box, Thr159 abuts the PDS5-binding FGF motif, and Ser209 sits in the C-terminal IDR. This co-localisation provides a structural explanation for the established regulatory logic in which mitotic phosphorylation of Sororin by CDK1 (assisted by Aurora B) displaces it from PDS5 and relieves WAPL inhibition, dissolving arm cohesion \citep{nishiyama2013,dreier2011}: because the PDS5-binding FGF motif is a short linear element embedded in a disordered, heavily phosphorylatable context, phosphorylation of the surrounding chain can switch the interaction off without requiring the disruption of a folded domain, exactly as expected for a fuzzy complex \citep{tompa2008,fuxreiter2018}.
 
 The same disordered architecture rationalises the two cancer-associated inputs. The ERK2/MAPK site Ser209, reported to be phosphorylated during lung carcinogenesis \citep{nguyen2010}, is one of the most disordered positions in the protein, i.e.\ fully accessible to a proline-directed kinase; and the SPOP-dependent degradation that controls CDCA5 levels in prostate cancer \citep{zhang2021} requires a SPOP-binding degron, a class of short linear motif that operates only in disordered, accessible sequence. Thus both the phospho-switch that governs cohesion and the ubiquitin-dependent control of Sororin abundance are implemented on the same disordered scaffold. Taken together, the phospho-site map indicates that the regulation of Sororin---mitotic inactivation, oncogenic ERK phosphorylation and SPOP-mediated turnover---is concentrated on its intrinsically disordered regions, consistent with a fuzzy hub whose interactions are designed to be toggled by post-translational modification.
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \caption{\textit{Proline-directed (S/T-P) phosphorylation sites of Sororin and their context. Six of the seven candidate CDK1/ERK sites lie within intrinsically disordered regions and the seventh (Thr159) in the short linker preceding the FGF motif; none is in the folded C-terminal domain.}}
 \label{tab:phos}
@@ -203,19 +206,20 @@ Ser209 & SP & 199--222 (C-terminal IDR)& ERK2 site, lung cancer \citep{nguyen201
 \end{tabular}
 \end{table}
 
+\FloatBarrier
 \subsection{Predicted short linear motifs anchor specific network edges to the disordered chain}
 The disorder profile shows that Sororin's interaction determinants sit in disordered sequence, but disorder alone does not specify which partner binds where. To close this gap we screened the full sequence against the ELM resource and retained the predictions whose motif class corresponds to a partner already present in the network (Table~\ref{tab:elm}, Figure~\ref{fig:elm}). ELM independently recovered the annotated KEN box (residues 87--91, flagged by ELM as an experimentally validated instance) as an APC/C-recognition (DEG\_APCC\_KENBOX\_2) motif, matching the UniProt annotation (88--90) to within one residue. It further identified two SPOP-binding-consensus degrons (DEG\_SPOP\_SBC\_1) at residues 122--126 and 155--159, providing a concrete sequence-level candidate for the SPOP-dependent degradation reported in prostate cancer \citep{zhang2021}, which the network alone could only represent as an edge. A generic MAPK docking motif (DOC\_MAPK\_gen\_1, residues 77--84) was found immediately adjacent to the reported ERK/MAPK phospho-site Ser79 \citep{nguyen2010}, giving ERK2 a plausible physical docking element in addition to its phospho-acceptor site, and a PLK1 phosphorylation motif (MOD\_Plk\_1) was identified at residues 201--207, close to the ERK2 site Ser209, consistent with PLK1's role as one of the mitotic kinases in the high-confidence STRING module. Finally, nine occurrences of the generic proline-directed kinase motif (MOD\_ProDKin\_1) recapitulated the same cluster of CDK1 candidate sites as the manual S/T-P classification of Section~3.3, here obtained through ELM's curated motif pattern rather than a hand-coded rule, providing a consistency check between the two approaches.
 
 Of these fourteen network-linked motifs, eleven (79\%) are majority disordered (mean IUPred2 $0.65$, mean $67\%$ disordered over the motif window for the CDK1 cluster); the exceptions are the second SPOP degron and one CDK1 site, which fall in the short, partially ordered linker adjoining the FGF motif, in the same region as the outlier phospho-site Thr159 identified in Section~3.3. Thus, in contrast to reporting disorder as a general property of the protein, this analysis assigns a specific short linear motif to four of the five scrutinised network partners (APC/C, SPOP, ERK2/MAPK1 and PLK1), each located predominantly, though not exclusively, within a disordered region.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{Fig3_motif_network_map.pdf}
 \caption{\textbf{Predicted short linear motifs link specific network partners to the Sororin sequence.} Each row is a network partner (or literature-curated node); coloured blocks mark the residue range of an ELM-predicted motif for that partner, coloured as in Figure~\ref{fig:net}. Thick-edged blocks are ELM-annotated (experimentally documented) instances; thin-edged blocks are ELM predictions without a prior experimental annotation. Shaded bands as in Figure~\ref{fig:dis}: orange for the intrinsically disordered regions, blue for the folded C-terminal domain. The FGF motif (UniProt annotation, not an ELM class) is shown for reference.}
 \label{fig:elm}
 \end{figure}
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \caption{\textit{Curated, network-linked short linear motifs predicted by ELM. The CDK1 row summarises the nine MOD\_ProDKin\_1 hits (individual ranges: 18--24, 45--51, 72--78, 76--82, 108--114, 112--118, 156--162, 178--184, 206--212); all other rows are single motifs. Disorder statistics are the mean IUPred2 score and \% of residues with IUPred2 $>0.5$ over the motif window(s), from the same profile as Table~\ref{tab:map}.}}
 \label{tab:elm}
@@ -234,17 +238,18 @@ MOD\_ProDKin\_1 (9 sites) & see caption & CDK1 & 0.65 & 67\% & no \\
 \end{tabular}
 \end{table}
 
+\FloatBarrier
 \subsection{Secondary-structure prediction and a second disorder predictor recover the single folded element}
 Finally, we asked whether the folded/disordered partition inferred from IUPred2 is matched by an actual secondary-structure assignment and by an independent disorder predictor. PSIPRED~4.0 assigned only $18.7\%$ of the sequence to helix and $3.2\%$ to strand, leaving $78.2\%$ as coil (Figure~\ref{fig:ss}), and placed its only two extended helices at residues 133--145 and, most prominently, 225--245; the latter lies within the conserved C-terminal Sororin domain (residues 230--252), which was $70\%$ helix and $83\%$ ordered secondary structure overall (Table~\ref{tab:ss}). DISOPRED3 independently classified $63.9\%$ of the protein as disordered, closely matching the IUPred2 value of $61.5\%$ obtained by a different method (Section~3.2), and assigned the C-terminal Sororin domain $0\%$ disorder. The two predictors therefore converge on the same architecture: the C-terminal domain is the single element that is simultaneously ordered in secondary structure ($83\%$ H/E) and non-disordered ($0\%$), whereas the three intrinsically disordered regions are almost entirely coil ($79$--$100\%$) and predominantly disordered ($46$--$100\%$ by DISOPRED3). The interaction motifs mapped, as before, outside the folded domain: the KEN box, the MAPK docking motif and both SPOP degrons fell in coil, and the PDS5-binding FGF motif was assigned coil with a locally low DISOPRED3 disorder score, consistent with the locally ordered but non-regular SLiM dip identified in Section~3.2 and with the principle that a linear motif is local order grafted onto a disordered carrier \citep{fuxreiter2007}. Taken together, an actual secondary-structure prediction and a second, independent disorder predictor both recover the one experimentally supported folded element \citep{wu2011} and assign no comparable ordered structure to the disordered interaction regions, corroborating the disorder-centred architecture with methods distinct from the IUPred2/ANCHOR2 analysis.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{Fig4_secondary_structure.pdf}
 \caption{\textbf{PSIPRED secondary structure over the DISOPRED3 disorder profile of Sororin.} Top, per-residue PSIPRED assignment (red, helix; orange, strand; grey, coil). Bottom, DISOPRED3 per-residue disorder with the $0.5$ threshold (dashed); shaded bands as in Figure~\ref{fig:dis}: orange, the three intrinsically disordered regions; blue, the folded C-terminal Sororin domain. The only extended ordered element is the C-terminal helix (residues 225--245), which coincides with the deep DISOPRED3 disorder minimum; the remainder of the chain is coil and predicted disordered.}
 \label{fig:ss}
 \end{figure}
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \caption{\textit{PSIPRED secondary structure and DISOPRED3 disorder over the annotated regions and network-linked motifs. Values are the percentage of residues in each region assigned to helix, strand or coil by PSIPRED, and to the disordered state by DISOPRED3. Only the C-terminal Sororin domain is ordered by both measures.}}
 \label{tab:ss}
@@ -266,6 +271,7 @@ Sororin domain & 230--252 & 70 & 13 & 17 & 0 \\
 \end{tabular}
 \end{table}
 
+\FloatBarrier
 \section{Discussion and Conclusion}
 
 We set out to determine whether Sororin engages its partners through folded domains or through intrinsically disordered regions, and whether the modifications that toggle those interactions are located in disordered sequence. Integrating a cohesin-centred interaction network with per-residue disorder and binding predictions and with the experimentally defined interaction motifs, we found that Sororin is a small, high-confidence hub of a dense cohesin module (density $0.89$) that is itself $\sim\!62\%$ intrinsically disordered; that its APC/C, PDS5 and ERK2 determinants all reside in disordered segments while only the short C-terminal domain is folded; and that its seven proline-directed phospho-sites lie outside the folded C-terminal domain, in the disordered regions and adjoining linker surrounding those determinants; and, going beyond disorder as a general property, that an independent linear-motif prediction anchors four of the five scrutinised network partners (APC/C, SPOP, ERK2/MAPK1, PLK1) to a specific short sequence element, predominantly but not exclusively within the disordered regions. These observations answer the question directly: the Sororin interactome is built on disorder, and where a partner-specific claim can be made at all, it is a short linear motif embedded in that disorder, rather than disorder in the abstract, that explains the edge.
