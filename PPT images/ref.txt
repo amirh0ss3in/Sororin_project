@@ -13,3 +13,6 @@ ChatGPT Image Jul 25, 2026, 10_17_54 PM.png:
 
 metabolic-network-reconstruction1.jpg:
     https://pharmaceuticalintelligence.com/metabolic-network-reconstruction-2/
+
+cell cycle.png:
+    https://onlinelibrary.wiley.com/doi/pdf/10.1002/bies.70093
